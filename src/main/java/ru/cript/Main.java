@@ -20,7 +20,8 @@ public class Main {
     public static Character[] chars = {'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я','.', ',', '\"', ':', '-', '!', '?', '\u0020'};
 
     public static void main(String[] args) {
-
+        
+        //hello from github
         menu();
 
     }
