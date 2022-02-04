@@ -13,15 +13,14 @@ import java.util.stream.Collectors;
 
 /**
  * @author Nikolay Chityakov
- * @version 21.01.22
+ * @version 4.02.22
  */
 
 public class Main {
-    public static Character[] chars = {'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я','.', ',', '\"', ':', '-', '!', '?', '\u0020'};
+    public static String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя,.\":-!?\u0020";
 
     public static void main(String[] args) {
-        
-        //hello from github
+
         menu();
 
     }
@@ -43,23 +42,23 @@ public class Main {
                 case 1 -> {
                     System.out.println("Напишите путь к файлу для шифрования");
                     path = scanner.next();
-                    System.out.println("Введите ключ для шифрования от -40 до 40");
+                    System.out.println("Введите ключ для шифрования от 0 до " + alphabet.length());
                     key = scanner.nextInt();
-                    Encrypt.encrypt(Path.of(path), key, chars);
+                    Encrypt.encrypt(Path.of(path), key, alphabet);
                     System.out.println("Файл зашифрован\nСмотрите в " + path + "\n*********");
                 }
                 case 2 -> {
                     System.out.println("Напишите путь к файлу, который нужно расшифровать имея ключ");
                     path = scanner.next();
-                    System.out.println("Введите ключ для расшифровки от -40 до 40");
+                    System.out.println("Введите ключ для расшифровки от 0 до " + alphabet.length());
                     int key2 = scanner.nextInt();
-                    Decipher.decipher(Path.of(path), key2, chars);
+                    Decipher.decipher(Path.of(path), key2, alphabet);
                     System.out.println("Файл успешно расшифрован, НО ЭТО НЕ ТОЧНО)!\nСмотрите в " + path + "\n*********");
                 }
                 case 3 -> {
                     System.out.println("Напишите путь к файлу для взлома ключа брут форсом");
                     path = scanner.next();
-                    BrutForce.decipher(Path.of(path), chars);
+                    BrutForce.decipher(Path.of(path), alphabet);
                 }
                 case 4 -> {
                     System.out.println("Напишите путь к зашифрованному файлу");

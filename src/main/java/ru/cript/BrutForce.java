@@ -1,50 +1,66 @@
 package ru.cript;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class BrutForce {
 
-    public static void decipher(Path path, Character[] chars) {
+    public static void decipher(Path path, String alphabet) {
 
-        StringBuilder str = new StringBuilder();
-        List<String> ciphertext = Main.readFile(path);
+
+        List<Character> ciphertext = Main.readFileChar(path);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (Character character : ciphertext) {
+            stringBuilder.append(character);
+        }
+
+        String iText = String.valueOf(stringBuilder);
+
+        StringBuilder readyText = new StringBuilder();
+
+        List<String> stringList = new ArrayList<>();
+
 
         int point = 0;
         int key = 0;
-        while (key <= chars.length) {
-            for (int i = 0; i < ciphertext.get(0).length(); i++) {
-                for (int j = 0; j < chars.length; j++) {
-                    if (ciphertext.get(0).charAt(i) == chars[j]) {
-                        if (j - key >= 0 && key >= 0) {   //key++ если не выходит в -
-                            str.append(chars[j - key]);
-                        } else if (key >= 0) {             //если key выходит в -1,...,-n
-                            str.append(chars[chars.length - (key - j)]);
-                        }
-                        if (key < 0) {
-                            if (j - key < chars.length) {   //Если не выходит за предел
-                                str.append(chars[j - key]); //j+key
-                            } else {
-                                int a = chars.length + key;
-                                str.append(chars[j - a]);
-                            }
+        while (key <= alphabet.length() - 1) {
+            for (int i = 0; i < iText.length(); i++) {
+                for (int j = 0; j < alphabet.length(); j++) {
+                    if (alphabet.charAt(j) == iText.charAt(i)) {
+                        if (j - key >= 0) {
+                            readyText.append(alphabet.charAt(j - key));
+                        } else {
+                            int count = alphabet.length() - (-j + key);
+                            readyText.append(alphabet.charAt(count));
                         }
                     }
                 }
             }
 
-            for (int i = 0, j = 0; i < str.length() - 2; i++, j++) {
-                if (str.charAt(i + 1) == '\u0020' && str.charAt(i) == ',') {
+            Scanner scanner = new Scanner(readyText.toString()).useDelimiter(" ");
+            while (scanner.hasNext()) {
+                stringList.add(scanner.next());
+            }
+
+            for (String s : stringList) {
+                if (s.length() < 11 && s.length() > 4
+                        && (s.charAt(s.length() - 1) == ',' || s.charAt(s.length() - 1) == '.')
+                        && (s.charAt(0) != ',' && s.charAt(0) != '!')) {
                     point++;
                 }
-                float res = (float) point / str.length();
-                    if (res > 0.007) {
-                        System.out.println("KEY = " + key);
-                        return;
-                    }
+                double res = readyText.length() / (double) point / 1000.0;
+                if (res < 0.5) {
+                    System.out.println("KEY " + key);
+                    return;
+                }
             }
             key++;
-            str.setLength(0);
+            readyText.setLength(0);
+            stringList.clear();
             point = 0;
         }
     }

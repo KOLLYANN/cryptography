@@ -7,47 +7,36 @@ import java.util.List;
 
 public class Encrypt {
 
-    public static void encrypt(Path path, int key, Character[] chars) {
+    public static void encrypt(Path path, int key, String alphabet) {
 
         List<Character> characterList = Main.readFileChar(path);
 
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder inputText = new StringBuilder();
 
         for (Character character : characterList) {
-            stringBuilder.append(character);
+            inputText.append(character);
         }
 
-        String s2 = String.valueOf(stringBuilder);
-        String s = s2.toLowerCase();
-        Character[] characters = new Character[s2.length()];
+        String iText = String.valueOf(inputText);
 
-        StringBuilder stringBuilder2 = new StringBuilder();
+        StringBuilder readyCryptText = new StringBuilder();
 
-        for (int i = 0; i < chars.length; i++) {
-            for (int j = 0; j < s.length(); j++) {
-                if (chars[i] == (s.charAt(j))) {
-                    // key > 0
-                    if (key >= 0 || 0 <= key + i) {
-                        if (i + key < chars.length) {
-                            characters[j] = chars[i + key];
-                        } else {
-                            int a = chars.length - key;
-                            characters[j] = chars[i - a];
-                        }
-                        // key < 0
+        //key 0,...,alphabet.length()
+        for (int i = 0; i < iText.length(); i++) {
+            for (int j = 0; j < alphabet.length(); j++) {
+                if (alphabet.charAt(j) == iText.charAt(i)) {
+                    if (j + key < alphabet.length()) {
+                        readyCryptText.append(alphabet.charAt(j + key));
                     } else {
-                            characters[j] = chars[chars.length + key + i];
+                        int count = (j + key) - alphabet.length();
+                        readyCryptText.append(alphabet.charAt(count));
                     }
                 }
             }
         }
-        for (Character character : characters) {
-            if (character != null) {
-                stringBuilder2.append(character);
-            }
-        }
+
         try (FileWriter fileWriter = new FileWriter(String.valueOf(path))) {
-            fileWriter.write(stringBuilder2.toString());
+            fileWriter.write(readyCryptText.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
